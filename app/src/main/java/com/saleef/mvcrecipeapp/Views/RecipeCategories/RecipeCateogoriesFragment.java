@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.saleef.mvcrecipeapp.Common.BaseFragment;
 import com.saleef.mvcrecipeapp.Recipe.RecipeCategory;
 import com.saleef.mvcrecipeapp.Common.ScreenNavigator.ScreenNavigator;
+import com.saleef.mvcrecipeapp.Networking.SharedPrefs;
 import com.saleef.mvcrecipeapp.Views.RecipeCategories.UseCase.FetchRecipeDisplayUseCase;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class RecipeCateogoriesFragment extends BaseFragment implements HomeView.
    private FetchRecipeDisplayUseCase mFetchRecipeDisplayUseCase;
    private HomeView mHomeView;
    private ScreenNavigator mScreenNavigator;
-
+   private SharedPrefs mSharedPrefs;
 
 
 
@@ -45,10 +46,10 @@ public class RecipeCateogoriesFragment extends BaseFragment implements HomeView.
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-
+            mFetchRecipeDisplayUseCase = getControllerCompositionRoot().getRecipeDisplayUseCase();
+            mScreenNavigator = getControllerCompositionRoot().getScreenNavigator();
+            mSharedPrefs = getControllerCompositionRoot().getSharedPrefs();
         }
-        mFetchRecipeDisplayUseCase = getControllerCompositionRoot().getRecipeDisplayUseCase();
-        mScreenNavigator = getControllerCompositionRoot().getScreenNavigator();
 
 
     }
@@ -88,6 +89,11 @@ public class RecipeCateogoriesFragment extends BaseFragment implements HomeView.
     @Override
     public void onRecipeClicked(RecipeCategory recipeCategory) {
         mScreenNavigator.toRecipeDetails(recipeCategory);
+    }
+
+    @Override
+    public void getFavoritedRecipes() {
+        mScreenNavigator.toFavoritedRecipes(mSharedPrefs.getFavoriteDishes());
     }
 
     @Override

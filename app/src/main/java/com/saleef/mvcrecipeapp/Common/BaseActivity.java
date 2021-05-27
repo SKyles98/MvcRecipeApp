@@ -36,23 +36,5 @@ public class BaseActivity extends AppCompatActivity {
         return mActivityCompositionRoot;
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.recipe_home_menu,menu);
-        MenuItem menuItem = menu.findItem(R.id.recipe_Search);
-        SearchView searchView = (androidx.appcompat.widget.SearchView) menuItem.getActionView();
-        searchView.setQueryHint("Search for a recipe...");
-        return super.onCreateOptionsMenu(menu);
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        switch(item.getItemId()){
-            case R.id.recipe_Search:
-                Toast.makeText(this,"Y u no collapse",Toast.LENGTH_SHORT).show();
-
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

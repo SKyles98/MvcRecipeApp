@@ -3,8 +3,11 @@ package com.saleef.mvcrecipeapp.Common.ViewFactory;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import com.saleef.mvcrecipeapp.Views.DrawerToggleController;
+import com.saleef.mvcrecipeapp.Views.FavoriteItems.FavoriteItemsViewImpl;
+import com.saleef.mvcrecipeapp.Views.FavoriteItems.ViewHolder.FavoritedItemViewHolder;
+import com.saleef.mvcrecipeapp.Views.HomeScreen.NavDrawerViewImpl;
 import com.saleef.mvcrecipeapp.Views.ActionBarController;
-import com.saleef.mvcrecipeapp.Views.HomeScreen.HomeScreenViewImpl;
 import com.saleef.mvcrecipeapp.Views.RecipeCategories.HomeViewImpl;
 import com.saleef.mvcrecipeapp.Views.RecipeCategories.ViewHolder.RecipeItemViewMvcImpl;
 import com.saleef.mvcrecipeapp.Views.RecipeCategoryItem.ViewHolder.RecipeCategoryItems;
@@ -19,19 +22,15 @@ needed dependencies from outer layers in the project
 public class ViewMvcFactory {
     private final LayoutInflater mLayoutInflater;
    private final ActionBarController mActionBarController;
-    public ViewMvcFactory(LayoutInflater layoutInflater, ActionBarController actionBarController){
+   private final DrawerToggleController mDrawerToggleController;
+    public ViewMvcFactory(LayoutInflater layoutInflater, ActionBarController actionBarController,DrawerToggleController drawerToggleController){
         mLayoutInflater = layoutInflater;
         mActionBarController = actionBarController;
+        mDrawerToggleController = drawerToggleController;
 
     }
 
-    public HomeScreenViewImpl getHomeScreenViewImpl(ViewGroup parent){
-        return new HomeScreenViewImpl(mLayoutInflater,parent,mActionBarController);
-    }
 
-    public HomeViewImpl getHomeViewImpl(ViewGroup parent){
-        return new HomeViewImpl(mLayoutInflater,parent,mActionBarController);
-    }
 
     public RecipeItemViewMvcImpl getRecipeItemViewMvcImpl(ViewGroup parent){
         return new RecipeItemViewMvcImpl(mLayoutInflater,parent);
@@ -49,6 +48,20 @@ public class ViewMvcFactory {
         return new RecipeDetailViewImpl(mLayoutInflater,parent);
     }
 
+    public HomeViewImpl getHomeViewImpl(ViewGroup parent){
+        return new HomeViewImpl(mLayoutInflater,parent,mActionBarController);
+    }
 
+    public FavoritedItemViewHolder getFavoritedItemViewHolder(ViewGroup parent){
+        return new FavoritedItemViewHolder(mLayoutInflater,parent);
+    }
+
+    public NavDrawerViewImpl getNavDrawerViewImpl(ViewGroup parent){
+        return new NavDrawerViewImpl(mLayoutInflater,parent,mActionBarController,mDrawerToggleController);
+    }
+
+    public FavoriteItemsViewImpl getFavoriteItemsViewImpl(ViewGroup parent){
+        return new FavoriteItemsViewImpl(mLayoutInflater,parent,mActionBarController);
+    }
 
 }

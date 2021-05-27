@@ -7,9 +7,10 @@ public class RecipeItem {
     private String name;
 
 
-      public RecipeItem(String thumbnail,String name){
+      public RecipeItem(String thumbnail,String name,String id){
           this.thumbnail = thumbnail;
           this.name = name;
+          this.id = id;
       }
     public String getId() {
         return id;

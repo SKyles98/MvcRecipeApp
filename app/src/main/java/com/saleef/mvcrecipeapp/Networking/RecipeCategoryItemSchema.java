@@ -10,6 +10,12 @@ public class RecipeCategoryItemSchema {
     @SerializedName("strMealThumb")
     private String thumbnail;
 
+   @SerializedName("idMeal")
+   private String id;
+
+    public String getId() {
+        return id;
+    }
 
     public String getMeal() {
         return meal;

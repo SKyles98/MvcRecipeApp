@@ -34,13 +34,15 @@ public class HomeViewImpl extends BaseObservable<HomeView.Listener> implements H
 
 
     public HomeViewImpl(LayoutInflater layoutInflater, ViewGroup parent, ActionBarController actionBarController){
+
+        // In the navigation drawer we override this method to add the view passed to the frameLayout
+        // Meaning this setRootView will pass this View to be added to the frameLayout
        setRootView(layoutInflater.inflate(R.layout.recipes_list,parent,false));
        mRecyclerView = findViewById(R.id.recycler_recipe_list);
-
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 3,
                 GridLayoutManager.VERTICAL, false);
        mRecyclerView.setLayoutManager(layoutManager);
-       mViewMvcFactory = new ViewMvcFactory(layoutInflater,actionBarController);
+       mViewMvcFactory = new ViewMvcFactory(layoutInflater,actionBarController,null);
        mRecipeAdapterMvc = new RecipeAdapterMvc(mViewMvcFactory,this,null);
        mRecyclerView.setAdapter(mRecipeAdapterMvc);
        mProgressBar = findViewById(R.id.homeProgress);
@@ -56,9 +58,7 @@ public class HomeViewImpl extends BaseObservable<HomeView.Listener> implements H
 
     @Override
     protected void notifySubscribers(Set<HomeView.Listener> listeners) {
-        for (HomeView.Listener listener:listeners){
 
-        }
     }
 
     @Override

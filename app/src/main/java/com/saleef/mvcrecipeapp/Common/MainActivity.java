@@ -6,7 +6,10 @@ import android.widget.FrameLayout;
 
 import com.saleef.mvcrecipeapp.Common.FragmentHelper.FragmentFrameWrapper;
 import com.saleef.mvcrecipeapp.Common.ScreenNavigator.ScreenNavigator;
-import com.saleef.mvcrecipeapp.Views.HomeScreen.HomeScreenViewMvc;
+import com.saleef.mvcrecipeapp.Views.HomeScreen.NavDrawerMvc;
+import com.saleef.mvcrecipeapp.Networking.SharedPrefs;
+
+import java.util.List;
 
 /**
  * This a an  recipe app to showcase knowledge learned so far in Mvc Architecture pattern
@@ -21,25 +24,28 @@ import com.saleef.mvcrecipeapp.Views.HomeScreen.HomeScreenViewMvc;
  * This allows connectivity between the controller and views without needing to know what that class does.
  * The Model in this pattern acts as format for oup app holding any apis,databases,or schemas.
  */
- //TODO When user clicks on title navigate to another screen displaying all foods in the category in the recycler view;
-    //TODO Implement a screen Navigator class for processing fragment transactions based off user events(i.e, navigate to food fragment when user clicks)
-    //TODO Implement Search feature where user can search for foods by name;
-    //TODO Create a search by name Use Case
-    //TODO Create a filter by FoodCategory Use Case
+ //TODO Add a view class that allows for the creation of custom recipes
+    //TODO Add functionality for the sharing of recipes
 
 
-public class MainActivity extends BaseActivity implements FragmentFrameWrapper {
-    private HomeScreenViewMvc homeView;
+
+public class MainActivity extends BaseActivity implements FragmentFrameWrapper, NavDrawerMvc.Listener {
     private ScreenNavigator mScreenNavigator;
+    private NavDrawerMvc mNavDrawerMvc;
+    private SharedPrefs mSharedPrefs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Benefits of using a composition root for some class implementations is the controller(MainActivity) doesnt have to know the implementation of these classes
-        homeView = getControllerCompositionRoot().getViewMvcFactory().getHomeScreenViewImpl(null);
+        // Benefits of using a composition root for some class implementations is the controller(MainActivity) doesnt have to know the implementation of these classe
+
        mScreenNavigator = getControllerCompositionRoot().getScreenNavigator();
-        setContentView(homeView.getRootView());
-        mScreenNavigator.toRecipeCategory();
+       mNavDrawerMvc = getControllerCompositionRoot().getViewMvcFactory().getNavDrawerViewImpl(null);
+        setContentView(mNavDrawerMvc.getRootView());
+        if (savedInstanceState==null) {
+            mScreenNavigator.toRecipeCategory();
+        }
+        mSharedPrefs = getControllerCompositionRoot().getSharedPrefs();
 
     }
 
@@ -47,25 +53,38 @@ public class MainActivity extends BaseActivity implements FragmentFrameWrapper {
     @Override
     protected void onStart() {
         super.onStart();
-
+        mNavDrawerMvc.register(this);
     }
 
 
     @Override
     protected void onStop() {
         super.onStop();
-
+       mNavDrawerMvc.register(this);
     }
 
 
-
-
-
-
-
+    @Override
+    public void onBackPressed() {
+        if (mNavDrawerMvc.isDrawerOpen()){
+            mNavDrawerMvc.closeDrawer();
+        } else {
+            super.onBackPressed();
+        }
+    }
 
     @Override
     public FrameLayout getFragmentFrame() {
-        return homeView.getFragmentFrame();
+        return mNavDrawerMvc.getFragmentFrame();
+    }
+
+    private List<String> getFavorites(){
+       return mSharedPrefs.getFavoriteDishes();
+    }
+
+    @Override
+    public void onFavoriteItemClicked() {
+        mNavDrawerMvc.closeDrawer();
+        mScreenNavigator.toFavoritedRecipes(getFavorites());
     }
 }

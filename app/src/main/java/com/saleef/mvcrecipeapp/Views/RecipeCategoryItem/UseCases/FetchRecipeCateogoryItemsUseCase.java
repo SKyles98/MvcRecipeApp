@@ -50,7 +50,7 @@ public class FetchRecipeCateogoryItemsUseCase extends BaseObservable<FetchRecipe
      private void onSuccess(List<RecipeCategoryItemSchema> list){
          ArrayList<RecipeItem> recipeItems = new ArrayList<>(list.size());
          for (RecipeCategoryItemSchema recipeCategoryItemSchema:list){
-             recipeItems.add(new RecipeItem(recipeCategoryItemSchema.getThumbnail(),recipeCategoryItemSchema.getMeal()));
+             recipeItems.add(new RecipeItem(recipeCategoryItemSchema.getThumbnail(),recipeCategoryItemSchema.getMeal(),recipeCategoryItemSchema.getId()));
          }
 
          for (Listener listener:getListeners()){

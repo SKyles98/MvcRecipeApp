@@ -9,6 +9,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_recipe_item_category"
         android:layout_width="match_parent"
+        android:layout_marginTop="50dp"
         android:layout_height="match_parent"/>
 
     <ProgressBar

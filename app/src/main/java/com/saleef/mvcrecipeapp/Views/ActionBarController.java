@@ -13,6 +13,7 @@ public class ActionBarController extends BaseViewMvc {
 
            mAppCompatActivity = appCompatActivity;
 
+
        }
 
        public void initToolbar(androidx.appcompat.widget.Toolbar toolbar){

@@ -12,6 +12,7 @@ public interface HomeView extends ObservableMvc<HomeView.Listener> {
 
          interface Listener{
              void onRecipeClicked(RecipeCategory recipeCategory);
+             void getFavoritedRecipes();
          }
 
          void bindRecipes(List<RecipeCategory> recipeCategories);

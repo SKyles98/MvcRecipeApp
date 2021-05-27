@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.saleef.mvcrecipeapp.Common.BaseFragment;
 import com.saleef.mvcrecipeapp.Recipe.RecipeItem;
 import com.saleef.mvcrecipeapp.Common.ScreenNavigator.ScreenNavigator;
+import com.saleef.mvcrecipeapp.Networking.SharedPrefs;
 import com.saleef.mvcrecipeapp.Views.RecipeCategoryItem.UseCases.FetchRecipeCateogoryItemsUseCase;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public class RecipeCategoryItemFragment extends BaseFragment implements FetchRec
   private ScreenNavigator mScreenNavigator;
   private FetchRecipeCateogoryItemsUseCase mFetchRecipeCateogoryItemsUseCase;
   private RecipeCategoryItemsImpl mRecipeCategoryItems;
+  private SharedPrefs mSharedPrefs;
     public RecipeCategoryItemFragment() {
         // Required empty public constructor
     }
@@ -41,10 +43,11 @@ public class RecipeCategoryItemFragment extends BaseFragment implements FetchRec
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-
+            mScreenNavigator = getControllerCompositionRoot().getScreenNavigator();
+            mFetchRecipeCateogoryItemsUseCase = getControllerCompositionRoot().getRecipeCategoryItemUseCase();
+            mSharedPrefs = getControllerCompositionRoot().getSharedPrefs();
         }
-        mScreenNavigator = getControllerCompositionRoot().getScreenNavigator();
-        mFetchRecipeCateogoryItemsUseCase = getControllerCompositionRoot().getRecipeCategoryItemUseCase();
+
 
     }
 
@@ -87,7 +90,7 @@ public class RecipeCategoryItemFragment extends BaseFragment implements FetchRec
     @Override
     public void onRecipeItemRetrievedSuccess(ArrayList<RecipeItem> recipeItems) {
                 mRecipeCategoryItems.hideProgressIndication();
-                mRecipeCategoryItems.bindRecipeItem(recipeItems);
+                mRecipeCategoryItems.bindRecipeItem(recipeItems,mSharedPrefs);
     }
 
     @Override
@@ -100,5 +103,16 @@ public class RecipeCategoryItemFragment extends BaseFragment implements FetchRec
     public void onRecipeItemClicked(RecipeItem recipeItem) {
         //TODO Navigate to detail screen showing the recipeItem full detail (insturctions ingredient)
         mScreenNavigator.toRecipeItemDetails(recipeItem);
+    }
+
+    @Override
+    public void onFavoriteItemClicked(RecipeItem recipeItem, boolean checked) {
+        if (checked) {
+            mSharedPrefs.addFavoriteDish(recipeItem);
+        } else {
+            //remove Preference method
+            mSharedPrefs.removeFavoritedDish(recipeItem);
+        }
+
     }
 }

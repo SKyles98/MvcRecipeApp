@@ -6,6 +6,9 @@ import android.view.LayoutInflater;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
+import com.saleef.mvcrecipeapp.Views.DrawerToggleController;
+import com.saleef.mvcrecipeapp.Views.FavoriteItems.UseCases.FetchFavoriteRecipesUseCase;
+import com.saleef.mvcrecipeapp.Networking.SharedPrefs;
 import com.saleef.mvcrecipeapp.Views.ActionBarController;
 import com.saleef.mvcrecipeapp.Common.FragmentHelper.FragmentFrameWrapper;
 import com.saleef.mvcrecipeapp.Common.FragmentHelper.FragmentHandler;
@@ -46,8 +49,12 @@ public class ControllerCompositionRoot {
        return LayoutInflater.from(getActivityCompositionRoot().getActivity());
     }
 
+    private DrawerToggleController getDrawerToggleController(){
+        return new DrawerToggleController(getActivity());
+    }
+
     public ViewMvcFactory getViewMvcFactory(){
-        return new ViewMvcFactory(getLayoutInflater(),getActionBarController());
+        return new ViewMvcFactory(getLayoutInflater(),getActionBarController(),getDrawerToggleController());
     }
 
     public ActionBarController getActionBarController(){
@@ -66,6 +73,10 @@ public class ControllerCompositionRoot {
         return new FetchRecipeDetailsUseCase(getActivityCompositionRoot().getCompositionRoot().getMealDbApi());
     }
 
+    public FetchFavoriteRecipesUseCase getFavoriteRecipesUseCase(){
+        return new FetchFavoriteRecipesUseCase(getActivityCompositionRoot().getCompositionRoot().getMealDbApi());
+    }
+
     // How to return interfaces in compositonRoot cast the interface with the activity
     private FragmentFrameWrapper getFragmentFrameWrapper(){
         return (FragmentFrameWrapper) getActivity();
@@ -77,5 +88,9 @@ public class ControllerCompositionRoot {
 
     public FragmentHandler getFragmentHandler(){
         return new FragmentHandler(getActivity(),getFragmentManager(),getFragmentFrameWrapper());
+    }
+
+    public SharedPrefs getSharedPrefs(){
+        return new SharedPrefs(getActivity());
     }
 }

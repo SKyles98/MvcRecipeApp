@@ -11,7 +11,7 @@
     android:focusable="true">
 
 
-    <LinearLayout
+    <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -19,8 +19,9 @@
             android:id="@+id/itemThumb"
             android:scaleType="fitXY"
             android:padding="5dp"
+            android:layout_marginTop="25dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="150dp"/>
         <TextView
             android:text="Meal Name"
             android:gravity="center"
@@ -28,6 +29,21 @@
             android:layout_marginBottom="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-    </LinearLayout>
+
+
+        <ToggleButton
+            android:id="@+id/favoriteButton"
+            android:layout_width="60dp"
+            android:layout_height="20dp"
+            android:background="@drawable/ic_favorite_unchecked"
+            android:backgroundTint="@color/amber"
+            android:layout_alignParentStart="true"
+            android:textOn=""
+            android:textOff=""
+           />
+
+    </RelativeLayout>
+
+
 
 </androidx.cardview.widget.CardView>

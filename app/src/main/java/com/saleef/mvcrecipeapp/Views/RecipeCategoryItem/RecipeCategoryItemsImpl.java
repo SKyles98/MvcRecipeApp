@@ -8,6 +8,7 @@ import android.widget.ProgressBar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.saleef.mvcrecipeapp.Networking.SharedPrefs;
 import com.saleef.mvcrecipeapp.Views.ActionBarController;
 import com.saleef.mvcrecipeapp.Common.MvcSkeleton.BaseObservable;
 import com.saleef.mvcrecipeapp.R;
@@ -36,7 +37,7 @@ public class RecipeCategoryItemsImpl extends BaseObservable<RecipeCategoryItemVi
        mRecyclerView = findViewById(R.id.recycler_recipe_item_category);
        mProgressBar = findViewById(R.id.homeProgress);
         mActionBarController = actionBarController;
-        mViewMvcFactory = new ViewMvcFactory(layoutInflater,actionBarController);
+        mViewMvcFactory = new ViewMvcFactory(layoutInflater,actionBarController,null);
         mRecipeCategoryItemAdapter = new RecipeCategoryItemAdapter(this,mViewMvcFactory);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
        mRecyclerView.setAdapter(mRecipeCategoryItemAdapter);
@@ -61,8 +62,8 @@ public class RecipeCategoryItemsImpl extends BaseObservable<RecipeCategoryItemVi
     }
 
     @Override
-    public void bindRecipeItem(List<RecipeItem> recipeCategories) {
-               mRecipeCategoryItemAdapter.bindRecipeCategoryItems(recipeCategories);
+    public void bindRecipeItem(List<RecipeItem> recipeCategories, SharedPrefs sharedPrefs) {
+               mRecipeCategoryItemAdapter.bindRecipeCategoryItems(recipeCategories,sharedPrefs);
     }
 
     @Override
@@ -80,5 +81,12 @@ public class RecipeCategoryItemsImpl extends BaseObservable<RecipeCategoryItemVi
               for (Listener listener:getListeners()){
                   listener.onRecipeItemClicked(recipeItem);
               }
+    }
+
+    @Override
+    public void onFavoriteItemClicked(RecipeItem recipeItem,boolean checked) {
+            for (Listener listener:getListeners()){
+                listener.onFavoriteItemClicked(recipeItem,checked);
+            }
     }
 }
